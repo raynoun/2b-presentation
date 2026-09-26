@@ -1,0 +1,386 @@
+<title>Quiz de Bienvenue</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FFF8EC;
+    --bg-pattern:#FBEFDA;
+    --surface:#FFFFFF;
+    --surface-2:#FFF3DE;
+    --ink:#2B2140;
+    --muted:#7A7092;
+    --primary:#1E9C8B;
+    --primary-dark:#137566;
+    --primary-ink:#083F38;
+    --accent:#F5A623;
+    --accent-ink:#7A4E00;
+    --coral:#EF6F6C;
+    --violet:#7C6FDB;
+    --border:#EEE1C6;
+    --track:#F1E6CE;
+    --shadow: 0 10px 26px -12px rgba(43,33,64,0.28);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#191531;
+      --bg-pattern:#1F1A3B;
+      --surface:#241E42;
+      --surface-2:#2C2450;
+      --ink:#F4EEDD;
+      --muted:#C2B8DE;
+      --primary:#42CBB8;
+      --primary-dark:#2FA894;
+      --primary-ink:#EAFFFB;
+      --accent:#FFC163;
+      --accent-ink:#3A2500;
+      --coral:#FF8D82;
+      --violet:#A79AFF;
+      --border:#3A3260;
+      --track:#332C58;
+      --shadow: 0 10px 26px -12px rgba(0,0,0,0.55);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#191531;
+    --bg-pattern:#1F1A3B;
+    --surface:#241E42;
+    --surface-2:#2C2450;
+    --ink:#F4EEDD;
+    --muted:#C2B8DE;
+    --primary:#42CBB8;
+    --primary-dark:#2FA894;
+    --primary-ink:#EAFFFB;
+    --accent:#FFC163;
+    --accent-ink:#3A2500;
+    --coral:#FF8D82;
+    --violet:#A79AFF;
+    --border:#3A3260;
+    --track:#332C58;
+    --shadow: 0 10px 26px -12px rgba(0,0,0,0.55);
+    color-scheme: dark;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    background-image:
+      radial-gradient(circle at 12% 8%, var(--bg-pattern) 0 2px, transparent 3px),
+      radial-gradient(circle at 38% 22%, var(--bg-pattern) 0 2px, transparent 3px),
+      radial-gradient(circle at 68% 6%, var(--bg-pattern) 0 2px, transparent 3px),
+      radial-gradient(circle at 88% 30%, var(--bg-pattern) 0 2px, transparent 3px),
+      radial-gradient(circle at 22% 55%, var(--bg-pattern) 0 2px, transparent 3px),
+      radial-gradient(circle at 78% 68%, var(--bg-pattern) 0 2px, transparent 3px),
+      radial-gradient(circle at 50% 88%, var(--bg-pattern) 0 2px, transparent 3px);
+    background-size: 220px 220px;
+    color:var(--ink);
+    font-family:'Quicksand', 'Trebuchet MS', sans-serif;
+    padding-inline:16px;
+    min-height:100%;
+  }
+  h1,h2,h3,.display{ font-family:'Baloo 2','Trebuchet MS',sans-serif; }
+
+  .wrap{ max-width:560px; margin:0 auto; padding-block:24px 40px; display:flex; flex-direction:column; gap:16px; }
+
+  .top{ text-align:center; display:flex; flex-direction:column; gap:6px; }
+  .top .moonrow{ font-size:2.1rem; line-height:1; }
+  .top h1{ margin:0; font-size:1.5rem; font-weight:800; color:var(--primary-dark); text-wrap:balance; }
+  .top p{ margin:0; color:var(--muted); font-size:0.95rem; }
+
+  .progress-wrap{ display:flex; align-items:center; gap:10px; }
+  .progress-track{ flex:1; height:12px; border-radius:99px; background:var(--track); overflow:hidden; }
+  .progress-fill{ height:100%; border-radius:99px; background:linear-gradient(90deg,var(--primary),var(--accent)); transition:width .35s ease; }
+  .progress-label{ font-family:'Baloo 2',sans-serif; font-weight:700; font-size:0.85rem; color:var(--primary-dark); white-space:nowrap; font-variant-numeric:tabular-nums; }
+
+  .card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:26px;
+    padding:26px 22px;
+    box-shadow:var(--shadow);
+    position:relative;
+    overflow:hidden;
+  }
+  .card::before{
+    content:"";
+    position:absolute; inset:0 0 auto 0; height:6px;
+    background:repeating-linear-gradient(90deg, var(--primary) 0 18px, var(--accent) 18px 36px, var(--coral) 36px 54px, var(--violet) 54px 72px);
+  }
+  .q-eyebrow{ font-size:0.78rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--accent-ink); background:color-mix(in srgb, var(--accent) 24%, transparent); display:inline-block; padding:4px 10px; border-radius:99px; margin-bottom:10px;}
+  .q-text{ font-size:1.3rem; font-weight:700; margin:0 0 18px 0; text-wrap:balance; }
+  .q-hint{ font-size:0.85rem; color:var(--muted); margin:-12px 0 16px; }
+
+  .field-text, .field-number, .field-date{
+    width:100%; font-family:'Quicksand',sans-serif; font-size:1.05rem; font-weight:600;
+    padding:14px 16px; border-radius:16px; border:2px solid var(--border); background:var(--surface-2); color:var(--ink);
+  }
+  .field-text:focus, .field-number:focus, .field-date:focus, textarea:focus{ outline:none; border-color:var(--primary); }
+  textarea{
+    width:100%; font-family:'Quicksand',sans-serif; font-size:1.05rem; font-weight:600; resize:vertical; min-height:90px;
+    padding:14px 16px; border-radius:16px; border:2px solid var(--border); background:var(--surface-2); color:var(--ink);
+  }
+
+  .chips{ display:flex; flex-wrap:wrap; gap:10px; }
+  .chip{
+    font-family:'Quicksand',sans-serif; font-weight:700; font-size:0.98rem;
+    padding:12px 18px; border-radius:16px; border:2px solid var(--border); background:var(--surface-2); color:var(--ink);
+    cursor:pointer; display:flex; align-items:center; gap:8px; transition:transform .12s ease, border-color .12s ease, background .12s ease;
+  }
+  .chip:hover{ transform:translateY(-1px); }
+  .chip .dot{ width:14px; height:14px; border-radius:50%; border:1px solid rgba(0,0,0,0.15); flex:none; }
+  .chip.selected{ background:color-mix(in srgb, var(--primary) 18%, var(--surface)); border-color:var(--primary); color:var(--primary-ink); }
+  .chip.selected.multi::before{ content:"✓ "; }
+
+  .nav-row{ display:flex; gap:10px; margin-top:22px; }
+  .btn{
+    font-family:'Baloo 2',sans-serif; font-weight:700; font-size:1rem; border:none; border-radius:16px; padding:13px 20px;
+    cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:8px; transition:transform .12s ease, opacity .12s;
+  }
+  .btn:active{ transform:scale(0.97); }
+  .btn-primary{ background:var(--primary); color:#fff; flex:1; box-shadow:0 6px 14px -6px color-mix(in srgb, var(--primary) 60%, transparent); }
+  .btn-primary:disabled{ opacity:0.45; cursor:not-allowed; }
+  .btn-ghost{ background:transparent; color:var(--muted); border:2px solid var(--border); }
+  .btn-accent{ background:var(--accent); color:var(--accent-ink); }
+  .btn-coral{ background:var(--coral); color:#fff; }
+
+  .end-wrap{ text-align:center; display:flex; flex-direction:column; align-items:center; gap:6px; }
+  .end-stars{ position:relative; height:64px; width:100%; margin-bottom:-6px; }
+  .end-stars span{ position:absolute; top:-40px; font-size:1.4rem; animation:fall 2.4s ease-in forwards; }
+  @keyframes fall{ 0%{ transform:translateY(0) rotate(0deg); opacity:0; } 10%{opacity:1;} 100%{ transform:translateY(120px) rotate(180deg); opacity:0; } }
+  .end-wrap h2{ margin:6px 0 0; font-size:1.6rem; color:var(--primary-dark); }
+  .end-wrap p{ margin:0; color:var(--muted); }
+  .end-actions{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-top:18px; width:100%; }
+  .end-actions .btn{ flex:1 1 auto; min-width:170px; }
+
+  .foot-links{ text-align:center; margin-top:6px; }
+  .foot-links button{ background:none; border:none; color:var(--muted); font-family:'Quicksand',sans-serif; font-size:0.82rem; text-decoration:underline; cursor:pointer; padding:6px; }
+
+  @media (max-width:420px){
+    .card{ padding:20px 16px; }
+    .q-text{ font-size:1.15rem; }
+  }
+</style>
+
+<div class="wrap" id="app"></div>
+
+<script>
+(function(){
+  // Colle ici l'URL de ton déploiement Google Apps Script (se termine par /exec).
+  // Tant que c'est vide, les réponses ne sont pas envoyées vers Google Sheets.
+  var SHEET_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbzWJUhkuL0C9PgvdUchqyhJdzYE0H1HZOvkIMOWs7g71thU-eqzXiL-P3uunIVoyxrO/exec';
+
+  var QUESTIONS = [
+    {id:'prenom', type:'text', label:'Identité', q:'Quel est ton prénom ?', ph:'Ton prénom'},
+    {id:'nom', type:'text', label:'Identité', q:'Quel est ton nom de famille ?', ph:'Ton nom de famille'},
+    {id:'age', type:'number', label:'Identité', q:'Quel âge as-tu ?', min:5, max:14, ph:'Ex : 9'},
+    {id:'anniversaire', type:'date', label:'Identité', q:'Quelle est ta date d’anniversaire ?'},
+    {id:'ville', type:'text', label:'Identité', q:'Dans quelle ville habites-tu ?', ph:'Ta ville'},
+    {id:'classe', type:'choice', label:'École', q:'En quelle classe es-tu à l’école ?', options:['CP','CE1','CE2','CM1','CM2','6e','5e','4e','3e','Lycée']},
+    {id:'fratrie', type:'number', label:'Famille', q:'Combien de frères et sœurs as-tu ?', min:0, max:15, ph:'Ex : 2'},
+    {id:'langues', type:'multi', label:'Famille', q:'Quelle(s) langue(s) parle-t-on chez toi ?', hint:'Tu peux en choisir plusieurs.', options:['Français','Anglais','Mahorais','Malgache','Comorien','Créole','Espagnol','Allemand']},
+    {id:'aide_islam', type:'choice', label:'Famille', q:'Est-ce que quelqu’un de ta famille t’aide à apprendre l’islam à la maison ?', options:['Oui','Non']},
+    {id:'couleur', type:'color', label:'Tes goûts', q:'Quelle est ta couleur préférée ?', options:[
+      ['Rouge','#E5484D'],['Orange','#F5A623'],['Jaune','#F7D046'],['Vert','#3FB27F'],['Turquoise','#1E9C8B'],
+      ['Bleu','#3B82C4'],['Violet','#7C6FDB'],['Rose','#EF7CB0'],['Marron','#8B5E3C'],['Noir','#2B2140'],
+      ['Blanc','#FFFFFF'],['Gris','#9AA0A6'],['Doré','#D4AF37'],['Argenté','#C0C0C8']
+    ]},
+    {id:'plat', type:'text', label:'Tes goûts', q:'Quel est ton plat préféré ?', ph:'Ton plat préféré'},
+    {id:'sport', type:'text', label:'Tes goûts', q:'Quel est ton sport ou ton jeu préféré ?', ph:'Ton sport ou jeu préféré'},
+    {id:'dessin_anime', type:'text', label:'Tes goûts', q:'Quel est ton dessin animé ou ton livre préféré ?', ph:'Ton dessin animé ou livre préféré'},
+    {id:'temps_libre', type:'text', label:'Tes goûts', q:'Qu’aimes-tu faire pendant ton temps libre ?', ph:'Ex : jouer dehors, dessiner...'},
+    {id:'super_pouvoir', type:'text', label:'Tes goûts', q:'Si tu pouvais avoir un super pouvoir, lequel choisirais-tu ?', ph:'Ton super pouvoir'},
+    {id:'matiere', type:'choice', label:'École', q:'Quelle est ta matière préférée à l’école ?', options:['Français','Mathématiques','Histoire-Géographie','Sciences','Anglais','Sport (EPS)','Arts plastiques','Musique','Technologie','La cantine 🍽️','Autre']},
+    {id:'activite_pref', type:'multi', label:'Tes goûts', q:'Qu’est-ce que tu préfères ?', hint:'Tu peux en choisir plusieurs.', options:['Lire','Dessiner','Chanter','Écouter des histoires']},
+    {id:'deja_cours', type:'choice', label:'Islam', q:'As-tu déjà suivi des cours d’islam avant ?', options:['Oui','Non']},
+    {id:'prophete', type:'choice', label:'Islam', q:'Connais-tu le nom de notre Prophète (paix et bénédiction sur lui) ?', options:['Ibrahim','Moussa','Muhammad ﷺ','Issa','Je ne sais pas']},
+    {id:'sourates', type:'text', label:'Islam', q:'Connais-tu des sourates par cœur ? Si oui, lesquelles ?', ph:'Ex : Al-Fatiha, Al-Ikhlas...', optional:true},
+    {id:'priere', type:'choice', label:'Islam', q:'Sais-tu faire une prière ? Laquelle connais-tu le mieux ?', options:['Al-Fajr','Adh-Dhouhr','Al-Asr','Al-Maghrib','Al-Icha','Je ne sais pas']},
+    {id:'prophete_histoire', type:'text', label:'Islam', q:'Peux-tu citer un prophète dont tu connais l’histoire ?', ph:'Le nom d’un prophète', optional:true},
+    {id:'piliers', type:'multi', label:'Islam', q:'Parmi les 5 piliers de l’islam, coche ceux que tu connais déjà :', hint:'Tu peux en choisir plusieurs, ou aucun si tu ne sais pas encore.', optional:true, options:['La Chahada (l’attestation de foi)','La Salat (la prière)','La Zakat (l’aumône)','Le Sawm (le jeûne du Ramadan)','Le Hajj (le pèlerinage à La Mecque)']},
+    {id:'pourquoi', type:'textarea', label:'Toi et le cours', q:'Pourquoi as-tu envie d’apprendre l’islam ?'},
+    {id:'envie_apprendre', type:'textarea', label:'Toi et le cours', q:'Qu’aimerais-tu apprendre en particulier dans ce cours ?'},
+    {id:'travail', type:'choice', label:'Toi et le cours', q:'Préfères-tu travailler seul(e) ou en groupe ?', options:['Seul(e)','En groupe']},
+    {id:'mot_special', type:'textarea', label:'Toi et le cours', q:'Est-ce qu’il y a quelque chose que tu voudrais que je sache sur toi ?', optional:true}
+  ];
+
+  var state = { step:0, answers:{} };
+  var app = document.getElementById('app');
+
+  function isAnswered(q){
+    var v = state.answers[q.id];
+    if(q.optional) return true;
+    if(q.type==='multi') return Array.isArray(v) && v.length>0;
+    if(v===undefined || v===null) return false;
+    if(typeof v === 'string') return v.trim().length>0;
+    return true;
+  }
+
+  function render(){
+    if(state.step >= QUESTIONS.length){ renderEnd(); return; }
+    var q = QUESTIONS[state.step];
+    var pct = Math.round((state.step)/QUESTIONS.length*100);
+    var html = '';
+    html += '<div class="top"><div class="moonrow">🌙 ✨ ⭐</div>';
+    html += '<h1>As-salamu alaykum !</h1><p>Apprenons à te connaître avant notre premier cours</p></div>';
+    html += '<div class="progress-wrap"><div class="progress-track"><div class="progress-fill" style="width:'+pct+'%"></div></div>';
+    html += '<div class="progress-label">'+(state.step+1)+' / '+QUESTIONS.length+'</div></div>';
+    html += '<div class="card">';
+    html += '<span class="q-eyebrow">'+q.label+'</span>';
+    html += '<h2 class="q-text">'+q.q+'</h2>';
+    if(q.hint) html += '<p class="q-hint">'+q.hint+'</p>';
+    html += '<div id="qbody"></div>';
+    html += '<div class="nav-row">';
+    html += '<button class="btn btn-ghost" id="btnBack" '+(state.step===0?'disabled style="visibility:hidden"':'')+'>◀ Retour</button>';
+    html += '<button class="btn btn-primary" id="btnNext">'+(state.step===QUESTIONS.length-1?'Terminer ✨':'Suivant ▶')+'</button>';
+    html += '</div></div>';
+    html += '<div class="foot-links"><button id="skipLink">'+(q.optional?'Passer cette question →':'')+'</button></div>';
+    app.innerHTML = html;
+
+    var qbody = document.getElementById('qbody');
+    qbody.innerHTML = fieldHtml(q);
+    bindField(q);
+
+    document.getElementById('btnNext').disabled = !isAnswered(q);
+    document.getElementById('btnNext').addEventListener('click', function(){ goNext(q); });
+    if(state.step>0) document.getElementById('btnBack').addEventListener('click', function(){ state.step--; render(); });
+    var skip = document.getElementById('skipLink');
+    if(skip){ skip.addEventListener('click', function(){ state.step++; render(); }); }
+  }
+
+  function fieldHtml(q){
+    var v = state.answers[q.id];
+    if(q.type==='text'){
+      return '<input class="field-text" id="f_'+q.id+'" type="text" placeholder="'+(q.ph||'')+'" value="'+(v||'').toString().replace(/"/g,'&quot;')+'">';
+    }
+    if(q.type==='number'){
+      return '<input class="field-number" id="f_'+q.id+'" type="number" min="'+(q.min!=null?q.min:'')+'" max="'+(q.max!=null?q.max:'')+'" placeholder="'+(q.ph||'')+'" value="'+(v!=null?v:'')+'">';
+    }
+    if(q.type==='date'){
+      return '<input class="field-date" id="f_'+q.id+'" type="date" value="'+(v||'')+'">';
+    }
+    if(q.type==='textarea'){
+      return '<textarea id="f_'+q.id+'" placeholder="Ta réponse...">'+(v||'')+'</textarea>';
+    }
+    if(q.type==='choice'){
+      var out = '<div class="chips" id="f_'+q.id+'">';
+      q.options.forEach(function(opt){
+        var sel = v===opt ? ' selected' : '';
+        out += '<button type="button" class="chip'+sel+'" data-val="'+opt.replace(/"/g,'&quot;')+'">'+opt+'</button>';
+      });
+      return out+'</div>';
+    }
+    if(q.type==='color'){
+      var out = '<div class="chips" id="f_'+q.id+'">';
+      q.options.forEach(function(pair){
+        var name=pair[0], hex=pair[1];
+        var sel = v===name ? ' selected' : '';
+        out += '<button type="button" class="chip'+sel+'" data-val="'+name+'"><span class="dot" style="background:'+hex+'"></span>'+name+'</button>';
+      });
+      return out+'</div>';
+    }
+    if(q.type==='multi'){
+      var arr = Array.isArray(v)?v:[];
+      var out = '<div class="chips" id="f_'+q.id+'">';
+      q.options.forEach(function(opt){
+        var sel = arr.indexOf(opt)>-1 ? ' selected multi' : ' multi';
+        out += '<button type="button" class="chip'+sel+'" data-val="'+opt.replace(/"/g,'&quot;')+'">'+opt+'</button>';
+      });
+      return out+'</div>';
+    }
+    return '';
+  }
+
+  function refreshNext(q){
+    var nextBtn = document.getElementById('btnNext');
+    if(nextBtn) nextBtn.disabled = !isAnswered(q);
+  }
+
+  function bindField(q){
+    if(q.type==='text' || q.type==='number' || q.type==='date'){
+      var el = document.getElementById('f_'+q.id);
+      el.addEventListener('input', function(){
+        state.answers[q.id] = q.type==='number' ? el.value : el.value;
+        refreshNext(q);
+      });
+      el.addEventListener('keydown', function(e){
+        if(e.key==='Enter'){ e.preventDefault(); if(isAnswered(q)) goNext(q); }
+      });
+    } else if(q.type==='textarea'){
+      var ta = document.getElementById('f_'+q.id);
+      ta.addEventListener('input', function(){ state.answers[q.id] = ta.value; refreshNext(q); });
+    } else if(q.type==='choice' || q.type==='color'){
+      var wrap = document.getElementById('f_'+q.id);
+      wrap.querySelectorAll('.chip').forEach(function(btn){
+        btn.addEventListener('click', function(){
+          wrap.querySelectorAll('.chip').forEach(function(b){ b.classList.remove('selected'); });
+          btn.classList.add('selected');
+          state.answers[q.id] = btn.getAttribute('data-val');
+          refreshNext(q);
+        });
+      });
+    } else if(q.type==='multi'){
+      var wrap2 = document.getElementById('f_'+q.id);
+      wrap2.querySelectorAll('.chip').forEach(function(btn){
+        btn.addEventListener('click', function(){
+          var val = btn.getAttribute('data-val');
+          var arr = Array.isArray(state.answers[q.id]) ? state.answers[q.id].slice() : [];
+          var idx = arr.indexOf(val);
+          if(idx>-1){ arr.splice(idx,1); btn.classList.remove('selected'); }
+          else{ arr.push(val); btn.classList.add('selected'); }
+          state.answers[q.id] = arr;
+          refreshNext(q);
+        });
+      });
+    }
+  }
+
+  function goNext(q){
+    if(!isAnswered(q)) return;
+    state.step++;
+    render();
+  }
+
+  function sendToSheet(){
+    if(!SHEET_WEBHOOK_URL) return;
+    try{
+      var values = QUESTIONS.map(function(q){
+        var v = state.answers[q.id];
+        if(Array.isArray(v)) v = v.join(' + ');
+        return (v===undefined || v===null) ? '' : String(v);
+      });
+      fetch(SHEET_WEBHOOK_URL, {
+        method:'POST',
+        mode:'no-cors',
+        headers:{'Content-Type':'text/plain;charset=utf-8'},
+        body: JSON.stringify({values: values})
+      }).catch(function(){});
+    }catch(e){}
+  }
+
+  function renderEnd(){
+    sendToSheet();
+    var stars = '';
+    for(var i=0;i<10;i++){
+      var left = Math.round(Math.random()*90);
+      var delay = (Math.random()*0.8).toFixed(2);
+      var glyphs = ['⭐','✨','🌟'];
+      var g = glyphs[i%3];
+      stars += '<span style="left:'+left+'%; animation-delay:'+delay+'s;">'+g+'</span>';
+    }
+
+    var html = '';
+    html += '<div class="top"><div class="moonrow">🌙 ✨ ⭐</div></div>';
+    html += '<div class="card"><div class="end-wrap">';
+    html += '<div class="end-stars">'+stars+'</div>';
+    html += '<h2>BarakAllah fik ! 🎉</h2>';
+    html += '<p>On se retrouve la semaine prochaine pour notre premier cours, incha’Allah !</p>';
+    html += '</div></div>';
+    app.innerHTML = html;
+  }
+
+  render();
+})();
+</script>
